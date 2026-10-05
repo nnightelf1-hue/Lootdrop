@@ -16,6 +16,9 @@ jobs:
       with:
         dotnet-version: 8.0.x
 
+    - name: Add BepInEx NuGet Source
+      run: dotnet nuget add source https://nuget.bepinex.dev/v3/index.json -n BepInEx
+
     - name: Build DLL
       run: dotnet build -c Release
 
@@ -23,4 +26,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: DimraethLootMod-DLL
-        path: bin/Release/**/DimraethGuaranteedLoot.dll
+        path: bin/Release/**/*.dll
