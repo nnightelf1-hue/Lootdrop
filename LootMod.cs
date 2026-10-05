@@ -1,6 +1,7 @@
 using System;
 using BepInEx;
 using HarmonyLib;
+using UnityEngine;
 
 namespace DimraethGuaranteedLoot
 {
@@ -18,20 +19,12 @@ namespace DimraethGuaranteedLoot
     [HarmonyPatch]
     public class LootPatch
     {
-        // ปรับโอกาสดรอปทุกชนิดให้เป็น 100% (ค่า 1f หรือ 100f)
-        [HarmonyPatch(typeof(UnityEngine.Random), nameof(UnityEngine.Random.Range), new Type[] { typeof(float), typeof(float) })]
-        [HarmonyPostfix]
-        public static void PostfixRange(ref float __result, float min, float max)
-        {
-            // ดักจับการสุ่มดรอปทั่วไป
-        }
-
-        // บังคับค่า Random.value ให้ได้ค่าต่ำสุดเสมอเพื่อชนะเงื่อนไข (value <= dropChance)
+        // บังคับค่า Random.value ให้ได้ 0.0 เสมอ เพื่อให้ผ่านเงื่อนไขการดรอปของทุกชนิด (value <= dropChance)
         [HarmonyPatch(typeof(UnityEngine.Random), "value", MethodType.Getter)]
         [HarmonyPostfix]
         public static void PostfixValue(ref float __result)
         {
-            __result = 0.0f; 
+            __result = 0.0f;
         }
     }
 }
